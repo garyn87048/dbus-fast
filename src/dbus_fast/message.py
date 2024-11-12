@@ -115,6 +115,7 @@ class Message:
         serial: int = 0,
         validate: bool = True,
     ) -> None:
+        print( "gmn dbus_fast" )
         self.destination = destination
         self.path = path
         self.interface = interface
