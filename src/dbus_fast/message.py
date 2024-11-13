@@ -138,6 +138,7 @@ class Message:
         self.serial = serial or 0
 
         if not validate:
+            print( "in \\dbus_fast\message, __init__, not validate, exit" )
             return
         if self.destination is not None:
             assert_bus_name_valid(self.destination)
@@ -156,7 +157,7 @@ class Message:
         for field in required_fields:
             if not getattr(self, field):
                 raise InvalidMessageError(f"missing required field: {field}")
-        print( "in \\dbus_fast\message, __init__, exit" )
+        print( "in \\dbus_fast\message, __init__, normal exit" )
 
     def __repr__(self) -> str:
         """Return a string representation of this message."""
