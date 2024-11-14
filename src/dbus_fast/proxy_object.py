@@ -280,6 +280,7 @@ class BaseProxyObject:
         :raises:
             - :class:`InterfaceNotFoundError <dbus_fast.InterfaceNotFoundError>` - If there is no interface by this name exported on the bus.
         """
+        print( "in \\dbus_fast\\src\\dbus-fast\\proxy, get_interface, enter" )
         if name in self._interfaces:
             return self._interfaces[name]
 

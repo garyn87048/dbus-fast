@@ -124,7 +124,7 @@ class BaseMessageBus:
         ProxyObject: Optional[Type[BaseProxyObject]] = None,
         negotiate_unix_fd: bool = False,
     ) -> None:
-        print( "in \\dbus_fast\message_bus, class __init__, enter" )
+        print( "in \\dbus_fast\\message_bus, class __init__, enter" )
         self.unique_name: Optional[str] = None
         self._disconnected = False
         self._negotiate_unix_fd = negotiate_unix_fd
@@ -189,7 +189,7 @@ class BaseMessageBus:
             - :class:`InvalidObjectPathError <dbus_fast.InvalidObjectPathError>` - If the given object path is not valid.
             - :class:`ValueError` - If an interface with this name is already exported on the message bus at this path
         """
-        print( "in \\dbus_fast\message_bus, export, enter" )
+        print( "in \\dbus_fast\\message_bus, export, enter" )
         assert_object_path_valid(path)
         if not isinstance(interface, ServiceInterface):
             raise TypeError("interface must be a ServiceInterface")
@@ -223,7 +223,7 @@ class BaseMessageBus:
         :raises:
             - :class:`InvalidObjectPathError <dbus_fast.InvalidObjectPathError>` - If the given object path is not valid.
         """
-        print( "in \\dbus_fast\message_bus, unexport, enter" )
+        print( "in \\dbus_fast\\message_bus, unexport, enter" )
         assert_object_path_valid(path)
         if type(interface) not in [str, type(None)] and not isinstance(
             interface, ServiceInterface
@@ -284,7 +284,7 @@ class BaseMessageBus:
             - :class:`InvalidObjectPathError <dbus_fast.InvalidObjectPathError>` - If the given object path is not valid.
             - :class:`InvalidBusNameError <dbus_fast.InvalidBusNameError>` - If the given bus name is not valid.
         """
-        print( "in \\dbus_fast\message_bus, introspect, enter" )
+        print( "in \\dbus_fast\\message_bus, introspect, enter" )
         if check_callback_type:
             BaseMessageBus._check_callback_type(callback)
 
@@ -320,7 +320,7 @@ class BaseMessageBus:
         :type interface: :class:`ServiceInterface
             <dbus_fast.service.ServiceInterface>`
         """
-        print( "in \\dbus_fast\message_bus, _emit_interface_added, enter" )
+        print( "in \\dbus_fast\\message_bus, _emit_interface_added, enter" )
         if self._disconnected:
             return
 
@@ -401,7 +401,7 @@ class BaseMessageBus:
         :raises:
             - :class:`InvalidBusNameError <dbus_fast.InvalidBusNameError>` - If the given bus name is not valid.
         """
-        print( "in \\dbus_fast\message_bus, request_name, enter" )
+        print( "in \\dbus_fast\\message_bus, request_name, enter" )
         assert_bus_name_valid(name)
 
         if callback is not None and check_callback_type:
@@ -455,7 +455,7 @@ class BaseMessageBus:
         :raises:
             - :class:`InvalidBusNameError <dbus_fast.InvalidBusNameError>` - If the given bus name is not valid.
         """
-        print( "in \\dbus_fast\message_bus, release_name, enter" )
+        print( "in \\dbus_fast\\message_bus, release_name, enter" )
         assert_bus_name_valid(name)
 
         if callback is not None and check_callback_type:
@@ -511,7 +511,7 @@ class BaseMessageBus:
             - :class:`InvalidObjectPathError <dbus_fast.InvalidObjectPathError>` - If the given object path is not valid.
             - :class:`InvalidIntrospectionError <dbus_fast.InvalidIntrospectionError>` - If the introspection data for the node is not valid.
         """
-        print( "in \\dbus_fast\message_bus, get_proxy_object, enter" )
+        print( "in \\dbus_fast\\message_bus, get_proxy_object, enter" )
         if self._ProxyObject is None:
             raise Exception(
                 "the message bus implementation did not provide a proxy object class"
@@ -894,7 +894,7 @@ class BaseMessageBus:
         msg: Message,
         send_reply: Callable[[Message], None],
     ) -> None:
-        print( "in \\dbus_fast\message_bus, _callback_method_handler, enter" )
+        print( "in \\dbus_fast\\message_bus, _callback_method_handler, enter" )
         """This is the callback that will be called when a method call is."""
         args = ServiceInterface._c_msg_body_to_args(msg) if msg.unix_fds else msg.body
         result = method.fn(interface, *args)
@@ -981,7 +981,7 @@ class BaseMessageBus:
     def _default_get_machine_id_handler(
         self, msg: Message, send_reply: Callable[[Message], None]
     ) -> None:
-        print( "in \\dbus_fast\message_bus, _default_get_machine_id_handler, enter" )
+        print( "in \\dbus_fast\\message_bus, _default_get_machine_id_handler, enter" )
         if self._machine_id:
             send_reply(Message.new_method_return(msg, "s", self._machine_id))
             return
@@ -1211,7 +1211,7 @@ class BaseMessageBus:
         """The high level client is initialized when the first proxy object is
         gotten. Currently just sets up the match rules for the name owner cache
         so signals can be routed to the right objects."""
-        print( "in \\dbus_fast\message_bus, _init_high_level_client, enter" )
+        print( "in \\dbus_fast\\message_bus, _init_high_level_client, enter" )
         if self._high_level_client_initialized:
             return
         self._high_level_client_initialized = True
@@ -1242,7 +1242,7 @@ class BaseMessageBus:
         """Add a match rule. Match rules added by this function are refcounted
         and must be removed by _remove_match_rule(). This is for use in the
         high level client only."""
-        print( "in \\dbus_fast\message_bus, _add_match_rule, enter" )
+        print( "in \\dbus_fast\\message_bus, _add_match_rule, enter" )
         if match_rule == self._name_owner_match_rule:
             return
 
@@ -1275,7 +1275,7 @@ class BaseMessageBus:
     def _remove_match_rule(self, match_rule):
         """Remove a match rule added with _add_match_rule(). This is for use in
         the high level client only."""
-        print( "in \\dbus_fast\message_bus, _remove_match_rule, enter" )
+        print( "in \\dbus_fast\\message_bus, _remove_match_rule, enter" )
         if match_rule == self._name_owner_match_rule:
             return
 

@@ -115,7 +115,7 @@ class Message:
         serial: int = 0,
         validate: bool = True,
     ) -> None:
-        print( "in \\dbus_fast\message, class __init__, enter" )
+        print( "in \\dbus_fast\\message, class __init__, enter" )
         self.destination = destination
         self.path = path
         self.interface = interface
@@ -138,7 +138,7 @@ class Message:
         self.serial = serial or 0
 
         if not validate:
-            print( "in \\dbus_fast\message, class __init__, not validate, exit" )
+            print( "in \\dbus_fast\\message, class __init__, not validate, exit" )
             return
         if self.destination is not None:
             assert_bus_name_valid(self.destination)
@@ -157,11 +157,11 @@ class Message:
         for field in required_fields:
             if not getattr(self, field):
                 raise InvalidMessageError(f"missing required field: {field}")
-        print( "in \\dbus_fast\message, class __init__, normal exit" )
+        print( "in \\dbus_fast\\message, class __init__, normal exit" )
 
     def __repr__(self) -> str:
         """Return a string representation of this message."""
-        print( "in \\dbus_fast\message, __repr__, enter and exit" )
+        print( "in \\dbus_fast\\message, __repr__, enter and exit" )
         return (
             f"<Message {self.message_type.name} "
             f"serial={self.serial} "
@@ -194,7 +194,7 @@ class Message:
         :raises:
             - :class:`InvalidInterfaceNameError` - If the error_name is not a valid interface name.
         """
-        print( "in \\dbus_fast\message, new_error, enter & exit" )
+        print( "in \\dbus_fast\\message, new_error, enter & exit" )
         return Message(
             message_type=MessageType.ERROR,
             reply_serial=msg.serial,
@@ -228,7 +228,7 @@ class Message:
         :raises:
             - :class:`InvalidSignatureError` - If the signature is not a valid signature.
         """
-        print( "in \\dbus_fast\message, new_method_return, enter&exit" )
+        print( "in \\dbus_fast\\message, new_method_return, enter&exit" )
         return Message(
             message_type=MessageType.METHOD_RETURN,
             reply_serial=msg.serial,
@@ -271,7 +271,7 @@ class Message:
             - :class:`InvalidInterfaceNameError` - If ``interface`` is not a valid interface name.
             - :class:`InvalidMemberNameError` - If ``member`` is not a valid member name.
         """
-        print( "in \\dbus_fast\message, new_signal, enter&exit" )
+        print( "in \\dbus_fast\\message, new_signal, enter&exit" )
         return Message(
             message_type=MessageType.SIGNAL,
             interface=interface,
@@ -285,7 +285,7 @@ class Message:
     def _marshall(self, negotiate_unix_fd: bool) -> bytearray:
         """Marshall this message into a byte array."""
         # TODO maximum message size is 134217728 (128 MiB)
-        print( "in \\dbus_fast\message, marshall, enter" )
+        print( "in \\dbus_fast\\message, marshall, enter" )
         body_block = Marshaller(self.signature, self.body)
         body_buffer = body_block._marshall()
 
@@ -324,5 +324,5 @@ class Message:
         header_block._marshall()
         header_block._align(8)
         header_buffer = header_block._buffer()
-        print( "in \\dbus_fast\message, marshall, exit" )
+        print( "in \\dbus_fast\\message, marshall, exit" )
         return header_buffer + body_buffer
