@@ -40,7 +40,9 @@ def _generate_hello_serialized(next_serial: int) -> bytes:
     )._marshall(False)
 
 
+print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, before send hello" )
 HELLO_1_SERIALIZED = _generate_hello_serialized(1)
+print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, after send hello" )
 
 
 def _future_set_exception(fut: asyncio.Future, exc: Exception) -> None:
