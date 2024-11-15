@@ -1,3 +1,4 @@
+print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, start imports" )
 import inspect
 import logging
 import socket
@@ -35,6 +36,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 _Message = Message
+print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, end imports" )
 
 
 def _expects_reply(msg: _Message) -> bool:

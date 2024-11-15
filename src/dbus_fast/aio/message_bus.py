@@ -1,3 +1,4 @@
+print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, start imports" )
 import array
 import asyncio
 import contextlib
@@ -26,6 +27,7 @@ from .message_reader import build_message_reader
 from .proxy_object import ProxyObject
 
 NO_REPLY_EXPECTED_VALUE = MessageFlag.NO_REPLY_EXPECTED.value
+print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, end imports" )
 
 
 def _generate_hello_serialized(next_serial: int) -> bytes:
@@ -55,6 +57,7 @@ class _MessageWriter:
     """A class to handle writing messages to the message bus."""
 
     def __init__(self, bus: "MessageBus") -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, __init__, enter" )
         """A class to handle writing messages to the message bus."""
         self.messages: deque[
             Tuple[bytearray, Optional[List[int]], Optional[asyncio.Future]]
@@ -71,6 +74,7 @@ class _MessageWriter:
 
     def write_callback(self, remove_writer: bool = True) -> None:
         """The callback to write messages to the message bus."""
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, write_callback, enter" )
         sock = self.sock
         try:
             while True:
@@ -119,6 +123,7 @@ class _MessageWriter:
     def buffer_message(
         self, msg: Message, future: Optional[asyncio.Future] = None
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, buffer_message, enter" )
         """Buffer a message to be sent later."""
         unix_fds = msg.unix_fds
         self.messages.append(
@@ -136,6 +141,7 @@ class _MessageWriter:
     def schedule_write(
         self, msg: Optional[Message] = None, future: Optional[asyncio.Future] = None
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, schedule_write, enter" )
         """Schedule a message to be written."""
         queue_is_empty = not self.messages
         if msg is not None:
@@ -197,6 +203,7 @@ class MessageBus(BaseMessageBus):
         auth: Optional[Authenticator] = None,
         negotiate_unix_fd: bool = False,
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, __init__, enter" )
         super().__init__(bus_address, bus_type, ProxyObject, negotiate_unix_fd)
         self._loop = asyncio.get_running_loop()
 
@@ -209,6 +216,7 @@ class MessageBus(BaseMessageBus):
 
         self._disconnect_future = self._loop.create_future()
         self._pending_futures: Set[asyncio.Future] = set()
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, __init__, exit" )
 
     async def connect(self) -> "MessageBus":
         """Connect this message bus to the DBus daemon.
@@ -223,6 +231,7 @@ class MessageBus(BaseMessageBus):
               the DBus daemon failed.
             - :class:`Exception` - If there was a connection error.
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, connect, enter" )
         await self._authenticate()
 
         future = self._loop.create_future()
@@ -262,6 +271,7 @@ class MessageBus(BaseMessageBus):
     async def introspect(
         self, bus_name: str, path: str, timeout: float = 30.0
     ) -> intr.Node:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, introspect, enter" )
         """Get introspection data for the node at the given path from the given
         bus name.
 
@@ -308,6 +318,7 @@ class MessageBus(BaseMessageBus):
     async def request_name(
         self, name: str, flags: NameFlag = NameFlag.NONE
     ) -> RequestNameReply:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, request_name, enter" )
         """Request that this message bus owns the given name.
 
         :param name: The name to request.
@@ -349,6 +360,7 @@ class MessageBus(BaseMessageBus):
                   an error for the method call or returned an invalid result.
             - :class:`Exception` - If a connection error occurred.
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, release_name, enter" )
         future = self._loop.create_future()
 
         super().release_name(
@@ -371,6 +383,7 @@ class MessageBus(BaseMessageBus):
         :raises:
             - :class:`Exception` - If a connection error occurred.
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, call, enter" )
         if (
             msg.flags.value & NO_REPLY_EXPECTED_VALUE
             or msg.message_type is not MessageType.METHOD_CALL
@@ -399,6 +412,7 @@ class MessageBus(BaseMessageBus):
             connection error occurs.
         :rtype: :class:`Future <asyncio.Future>`
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, send, enter" )
         if not msg.serial:
             msg.serial = self.next_serial()
 
@@ -409,6 +423,7 @@ class MessageBus(BaseMessageBus):
     def get_proxy_object(
         self, bus_name: str, path: str, introspection: intr.Node
     ) -> ProxyObject:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, get_proxy_object, enter" )
         return super().get_proxy_object(bus_name, path, introspection)
 
     async def wait_for_disconnect(self):
@@ -421,9 +436,11 @@ class MessageBus(BaseMessageBus):
             - :class:`Exception` - If connection was terminated unexpectedly or \
               an internal error occurred in the library.
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, wait_for_disconnect, enter" )
         return await self._disconnect_future
 
     def _make_method_handler(self, interface, method):
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, _make_method_handler, enter" )
         if not asyncio.iscoroutinefunction(method.fn):
             return super()._make_method_handler(interface, method)
 
@@ -468,6 +485,7 @@ class MessageBus(BaseMessageBus):
         return _coroutine_method_handler
 
     async def _auth_readline(self) -> str:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, _auth_readline, enter" )
         buf = b""
         while buf[-2:] != b"\r\n":
             # The auth protocol is line based, so we can read until we get a
@@ -476,6 +494,7 @@ class MessageBus(BaseMessageBus):
         return buf[:-2].decode()
 
     async def _authenticate(self) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, _authenticate, enter" )
         await self._loop.sock_sendall(self._sock, b"\0")
 
         first_line = self._auth._authentication_start(
@@ -507,6 +526,7 @@ class MessageBus(BaseMessageBus):
 
         All pending  and future calls will error with a connection error.
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, disconnect, enter" )
         super().disconnect()
         try:
             self._sock.close()
@@ -514,6 +534,7 @@ class MessageBus(BaseMessageBus):
             logging.warning("could not close socket", exc_info=True)
 
     def _finalize(self, err: Optional[Exception] = None) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, _finalize, enter" )
         try:
             self._loop.remove_reader(self._fd)
         except Exception:
@@ -546,6 +567,7 @@ class MessageBus(BaseMessageBus):
     def _reply_handler(
         self, future: asyncio.Future, reply: Optional[Any], err: Optional[Exception]
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, _reply_handler, enter" )
         """The reply handler for method calls."""
         if err:
             _future_set_exception(future, err)
