@@ -386,7 +386,7 @@ class MessageBus(BaseMessageBus):
             - :class:`Exception` - If a connection error occurred.
         """
         print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, call, enter" )
-        print( "==>> message={msg}" )
+        print( f"==>> message={msg}" )
         if (
             msg.flags.value & NO_REPLY_EXPECTED_VALUE
             or msg.message_type is not MessageType.METHOD_CALL
