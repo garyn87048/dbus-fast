@@ -404,6 +404,7 @@ class MessageBus(BaseMessageBus):
 
         await future
 
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, call, exit" )
         return future.result()
 
     def send(self, msg: Message) -> asyncio.Future:
@@ -425,6 +426,7 @@ class MessageBus(BaseMessageBus):
 
         future = self._loop.create_future()
         self._writer.schedule_write(msg, future)
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, send, exit" )
         return future
 
     def get_proxy_object(
@@ -498,6 +500,8 @@ class MessageBus(BaseMessageBus):
             # The auth protocol is line based, so we can read until we get a
             # newline.
             buf += await self._loop.sock_recv(self._sock, 1024)
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, _auth_readline, exit" )
+        print( f"==>> buf[:-2].decode()={buf[:-2].decode()}" )
         return buf[:-2].decode()
 
     async def _authenticate(self) -> None:
@@ -527,6 +531,7 @@ class MessageBus(BaseMessageBus):
                 # from the client must be the first octet of the authenticated/encrypted stream
                 # of D-Bus messages.
                 break
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, _authenticate, exit" )
 
     def disconnect(self) -> None:
         """Disconnect the message bus by closing the underlying connection asynchronously.
