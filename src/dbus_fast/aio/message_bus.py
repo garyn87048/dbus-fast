@@ -46,11 +46,13 @@ print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, after send hello" )
 
 
 def _future_set_exception(fut: asyncio.Future, exc: Exception) -> None:
+    print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, (not part of class), _future_set_exception, enter" )
     if fut is not None and not fut.done():
         fut.set_exception(exc)
 
 
 def _future_set_result(fut: asyncio.Future, result: Any) -> None:
+    print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, (not part of class), _future_set_result, enter" )
     if fut is not None and not fut.done():
         fut.set_result(result)
 
@@ -135,6 +137,8 @@ class _MessageWriter:
                 future,
             )
         )
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, buffer_message, end" )
+        print( f"==>> self.messages={self.messages}" )
 
     def _write_without_remove_writer(self) -> None:
         """Call the write callback without removing the writer."""
