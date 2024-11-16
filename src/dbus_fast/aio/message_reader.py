@@ -21,7 +21,7 @@ def _message_reader(
             if message is None:
                 return
             try:
-                print( f"==>> message={message}" )
+                print( f"==>> msg-reader-message={message}" )
                 process(message)
             except Exception:
                 logging.error("Unexpected error processing message: %s", exc_info=True)
