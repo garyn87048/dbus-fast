@@ -196,7 +196,9 @@ class ProxyObject(BaseProxyObject):
         introspection: Union[intr.Node, str, ET.Element],
         bus: BaseMessageBus,
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\ProxyObject, __init__, enter, calling super" )
         super().__init__(bus_name, path, introspection, bus, ProxyInterface)
+        print( "in \\dbus-fast\\src\\dbus_fast\\aio\\ProxyObject, __init__, after super" )
 
     def get_interface(self, name: str) -> ProxyInterface:
         return super().get_interface(name)

@@ -13,6 +13,7 @@ def _message_reader(
     finalize: Callable[[Optional[Exception]], None],
     negotiate_unix_fd: bool,
 ) -> None:
+    print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, enter" )
     """Reads messages from the unmarshaller and passes them to the process function."""
     try:
         while True:
@@ -20,6 +21,7 @@ def _message_reader(
             if message is None:
                 return
             try:
+                print( f"==>> message={message}" )
                 process(message)
             except Exception:
                 logging.error("Unexpected error processing message: %s", exc_info=True)
@@ -32,6 +34,7 @@ def _message_reader(
                 return
     except Exception as e:
         finalize(e)
+    print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, exit" )
 
 
 def build_message_reader(
@@ -40,6 +43,7 @@ def build_message_reader(
     finalize: Callable[[Optional[Exception]], None],
     negotiate_unix_fd: bool,
 ) -> Callable[[], None]:
+    print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, build_message_reader, enter" )
     """Build a callable that reads messages from the unmarshaller and passes them to the process function."""
     unmarshaller = Unmarshaller(None, sock, negotiate_unix_fd)
     return partial(_message_reader, unmarshaller, process, finalize, negotiate_unix_fd)
