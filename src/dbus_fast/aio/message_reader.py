@@ -21,8 +21,11 @@ def _message_reader(
             if message is None:
                 return
             try:
+                print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, before print message" )
                 print( f"==>> msg-reader-message={message}" )
+                print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, after print message, before process(message), not sure where this goes" )
                 process(message)
+                print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, after print message, after process(message)" )
             except Exception:
                 logging.error("Unexpected error processing message: %s", exc_info=True)
             # If we are not negotiating unix fds, we can stop reading as soon as we have
