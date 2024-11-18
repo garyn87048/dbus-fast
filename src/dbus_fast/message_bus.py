@@ -854,7 +854,9 @@ class BaseMessageBus:
                     handled = True
                     break
 
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, message was not handled by a user-handler" )
         if msg.message_type is MESSAGE_TYPE_SIGNAL:
+            print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, message type MESSAGE_TYPE_SIGNAL" )
             if (
                 msg.member == "NameOwnerChanged"
                 and msg.sender == "org.freedesktop.DBus"
@@ -869,6 +871,7 @@ class BaseMessageBus:
             return
 
         if msg.message_type is MESSAGE_TYPE_CALL:
+            print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, message type MESSAGE_TYPE_CALL" )
             if not handled:
                 handler = self._find_message_handler(msg)
                 if _expects_reply(msg) is False:
@@ -897,6 +900,8 @@ class BaseMessageBus:
                             )
                         )
             return
+            
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, An ERROR or a METHOD_RETURN" )
 
         # An ERROR or a METHOD_RETURN
         return_handler = self._method_return_handlers.get(msg.reply_serial)
@@ -904,6 +909,8 @@ class BaseMessageBus:
             if not handled:
                 return_handler(msg, None)
             del self._method_return_handlers[msg.reply_serial]
+            
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, final exit point, not expecting this is normal" )
 
     def _callback_method_handler(
         self,
