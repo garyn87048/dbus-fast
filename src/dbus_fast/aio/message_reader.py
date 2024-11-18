@@ -29,7 +29,11 @@ def _message_reader(
                 temp = temp.replace( '>', '>"' ) 
                 print( f"==>> message.body-1={temp}" )
                 print( f"==>> message.body-2={json.dumps(temp, sort_keys=True, indent=4)}" )
-                temp2 = dict( temp )
+                temp2 = dict()
+                try:
+                    temp2 = dict( temp )
+                except e:
+                    print( "failed to convert into dictionary" )
                 print( f"==>> message.body-3={json.dumps(temp2, sort_keys=True, indent=4)}" )
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, after print message, before process(message), not sure where this goes" )
                 process(message)
