@@ -34,6 +34,7 @@ class Arg:
         direction: Optional[List[ArgDirection]] = None,
         name: Optional[str] = None,
     ):
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Arg, __init__, enter" )
         if name is not None:
             assert_member_name_valid(name)
 
@@ -53,6 +54,7 @@ class Arg:
         self.signature = signature
         self.name = name
         self.direction = direction
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Arg, __init__, exit" )
 
     def from_xml(element: ET.Element, direction: ArgDirection) -> "Arg":
         """Convert a :class:`xml.etree.ElementTree.Element` into a
@@ -106,12 +108,14 @@ class Signal:
     """
 
     def __init__(self, name: Optional[str], args: Optional[List[Arg]] = None):
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Signal, __init__, enter" )
         if name is not None:
             assert_member_name_valid(name)
 
         self.name = name
         self.args = args or []
         self.signature = "".join(arg.signature for arg in self.args)
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Signal, __init__, exit" )
 
     def from_xml(element):
         """Convert an :class:`xml.etree.ElementTree.Element` to a :class:`Signal`.
@@ -169,6 +173,7 @@ class Method:
     """
 
     def __init__(self, name: str, in_args: List[Arg] = [], out_args: List[Arg] = []):
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Method, __init__, enter" )
         assert_member_name_valid(name)
 
         self.name = name
@@ -176,6 +181,7 @@ class Method:
         self.out_args = out_args
         self.in_signature = "".join(arg.signature for arg in in_args)
         self.out_signature = "".join(arg.signature for arg in out_args)
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Method, __init__, exit" )
 
     def from_xml(element: ET.Element) -> "Method":
         """Convert an :class:`xml.etree.ElementTree.Element` to a :class:`Method`.
@@ -246,6 +252,7 @@ class Property:
         signature: str,
         access: PropertyAccess = PropertyAccess.READWRITE,
     ):
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Property, __init__, enter" )
         assert_member_name_valid(name)
 
         tree = get_signature_tree(signature)
@@ -258,6 +265,7 @@ class Property:
         self.signature = signature
         self.access = access
         self.type = tree.types[0]
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Property, __init__, exit" )
 
     def from_xml(element):
         """Convert an :class:`xml.etree.ElementTree.Element` to a :class:`Property`.
@@ -316,12 +324,14 @@ class Interface:
         signals: Optional[List[Signal]] = None,
         properties: Optional[List[Property]] = None,
     ):
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Interface, __init__, enter" )
         assert_interface_name_valid(name)
 
         self.name = name
         self.methods = methods if methods is not None else []
         self.signals = signals if signals is not None else []
         self.properties = properties if properties is not None else []
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Interface, __init__, exit" )
 
     @staticmethod
     def from_xml(element: ET.Element) -> "Interface":
@@ -400,6 +410,7 @@ class Node:
         interfaces: Optional[List[Interface]] = None,
         is_root: bool = True,
     ):
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Node, __init__, enter" )
         if not is_root and not name:
             raise InvalidIntrospectionError('child nodes must have a "name" attribute')
 
@@ -407,6 +418,7 @@ class Node:
         self.nodes = []
         self.name = name
         self.is_root = is_root
+        print( "in \\dbus-fast\\src\\dbus_fast\\introspection, class Node, __init__, exit" )
 
     @staticmethod
     def from_xml(element: ET.Element, is_root: bool = False):

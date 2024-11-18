@@ -17,8 +17,10 @@ class SendReply:
 
     def __init__(self, bus: "BaseMessageBus", msg: Message) -> None:
         """Create a new reply context manager."""
+        print( "in \\dbus-fast\\src\\dbus_fast\\send_reply, class SendReply, __init__, enter" )
         self._bus = bus
         self._msg = msg
+        print( "in \\dbus-fast\\src\\dbus_fast\\send_reply, class SendReply, __init__, exit" )
 
     def __enter__(self):
         return self

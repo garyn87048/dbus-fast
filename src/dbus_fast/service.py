@@ -27,6 +27,7 @@ if TYPE_CHECKING:
 
 class _Method:
     def __init__(self, fn, name: str, disabled=False):
+        print( "in \\dbus-fast\\src\\dbus_fast\\service, class Method, __init__, enter" )
         in_signature = ""
         out_signature = ""
 
@@ -59,6 +60,7 @@ class _Method:
         self.out_signature = out_signature
         self.in_signature_tree = get_signature_tree(in_signature)
         self.out_signature_tree = get_signature_tree(out_signature)
+        print( "in \\dbus-fast\\src\\dbus_fast\\service, class Method, __init__, exit" )
 
 
 def method(name: Optional[str] = None, disabled: bool = False):
@@ -94,10 +96,12 @@ def method(name: Optional[str] = None, disabled: bool = False):
         def echo_two(self, val1: 's', val2: 'u') -> 'su':
             return [val1, val2]
     """
+    print( "in \\dbus-fast\\src\\dbus_fast\\service, method (decorator method, not a class), enter" )
     if name is not None and type(name) is not str:
         raise TypeError("name must be a string")
     if type(disabled) is not bool:
         raise TypeError("disabled must be a bool")
+    print( "in \\dbus-fast\\src\\dbus_fast\\service, method (decorator method, not a class), exit" )
 
     def decorator(fn):
         @wraps(fn)
@@ -114,6 +118,7 @@ def method(name: Optional[str] = None, disabled: bool = False):
 
 class _Signal:
     def __init__(self, fn, name, disabled=False):
+        print( "in \\dbus-fast\\src\\dbus_fast\\service, class Signal, __init__, enter" )
         inspection = inspect.signature(fn)
 
         args = []
@@ -136,6 +141,7 @@ class _Signal:
         self.name = name
         self.disabled = disabled
         self.introspection = intr.Signal(self.name, args)
+        print( "in \\dbus-fast\\src\\dbus_fast\\service, class Signal, __init__, exit" )
 
 
 def signal(name: Optional[str] = None, disabled: bool = False):
@@ -168,10 +174,12 @@ def signal(name: Optional[str] = None, disabled: bool = False):
         def two_strings_signal(self, val1, val2) -> 'ss':
             return [val1, val2]
     """
+    print( "in \\dbus-fast\\src\\dbus_fast\\service, signal, (not a class, decorator), enter" )
     if name is not None and type(name) is not str:
         raise TypeError("name must be a string")
     if type(disabled) is not bool:
         raise TypeError("disabled must be a bool")
+    print( "in \\dbus-fast\\src\\dbus_fast\\service, signal, (not a class, decorator), exit" )
 
     def decorator(fn):
         fn_name = name if name else fn.__name__
@@ -218,6 +226,7 @@ class _Property(property):
         self.__dict__["__DBUS_PROPERTY"] = True
 
     def __init__(self, fn, *args, **kwargs):
+        print( "in \\dbus-fast\\src\\dbus_fast\\service, class _Property, __init__, enter" )
         self.prop_getter = fn
         self.prop_setter = None
 
@@ -246,6 +255,7 @@ class _Property(property):
             del kwargs["options"]
 
         super().__init__(fn, *args, **kwargs)
+        print( "in \\dbus-fast\\src\\dbus_fast\\service, class _Property, __init__, exit" )
 
     def setter(self, fn, **kwargs):
         # XXX The setter decorator seems to be recreating the class in the list
@@ -299,12 +309,14 @@ def dbus_property(
         def string_prop(self, val: 's'):
             self._string_prop = val
     """
+    print( "in \\dbus-fast\\src\\dbus_fast\\service, dbus_property, not a class, decorator, enter" )
     if type(access) is not PropertyAccess:
         raise TypeError("access must be a PropertyAccess class")
     if name is not None and type(name) is not str:
         raise TypeError("name must be a string")
     if type(disabled) is not bool:
         raise TypeError("disabled must be a bool")
+    print( "in \\dbus-fast\\src\\dbus_fast\\service, dbus_property, not a class, decorator, exit" )
 
     def decorator(fn):
         options = {"name": name, "access": access, "disabled": disabled}
@@ -318,6 +330,7 @@ def _real_fn_result_to_body(
     signature_tree: SignatureTree,
     replace_fds: bool,
 ) -> Tuple[List[Any], List[int]]:
+    print( "in \\dbus-fast\\src\\dbus_fast\\service, _real_fn_result_to_body, not a class, enter" )
     out_len = len(signature_tree.types)
     if result is None:
         final_result = []
@@ -339,6 +352,7 @@ def _real_fn_result_to_body(
 
     if not replace_fds:
         return final_result, []
+    print( "in \\dbus-fast\\src\\dbus_fast\\service, _real_fn_result_to_body, not a class, exit" )
     return replace_fds_with_idx(signature_tree, final_result)
 
 
@@ -360,6 +374,7 @@ class ServiceInterface:
     """
 
     def __init__(self, name: str) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\service, class ServiceInterface, __init__, enter" )
         # TODO cannot be overridden by a dbus member
         self.name = name
         self.__methods: List[_Method] = []
@@ -402,6 +417,7 @@ class ServiceInterface:
                 raise ValueError(
                     f'property "{prop.name}" is writable but does not have a setter'
                 )
+        print( "in \\dbus-fast\\src\\dbus_fast\\service, class ServiceInterface, __init__, exit" )
 
     def emit_properties_changed(
         self, changed_properties: Dict[str, Any], invalidated_properties: List[str] = []
