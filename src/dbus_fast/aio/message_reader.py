@@ -32,7 +32,7 @@ def _message_reader(
                 temp2 = dict()
                 try:
                     temp2 = dict( temp )
-                except e:
+                except Exception as e:
                     print( "failed to convert into dictionary" )
                 print( f"==>> message.body-3={json.dumps(temp2, sort_keys=True, indent=4)}" )
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, after print message, before process(message), not sure where this goes" )
