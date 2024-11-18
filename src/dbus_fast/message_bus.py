@@ -856,20 +856,23 @@ class BaseMessageBus:
 
         print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, message was not handled by a user-handler" )
         if msg.message_type is MESSAGE_TYPE_SIGNAL:
-            print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, message type MESSAGE_TYPE_SIGNAL" )
+            print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, message type MESSAGE_TYPE_SIGNAL enter" )
             if (
                 msg.member == "NameOwnerChanged"
                 and msg.sender == "org.freedesktop.DBus"
                 and msg.path == "/org/freedesktop/DBus"
                 and msg.interface == "org.freedesktop.DBus"
             ):
+                print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, NameOwnerChanged logic" )
                 [name, old_owner, new_owner] = msg.body
                 if new_owner:
                     self._name_owners[name] = new_owner
                 elif name in self._name_owners:
                     del self._name_owners[name]
+            print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, MESSAGE_TYPE_SIGNAL exit, if no messages between enter-exit, then nothing happened" )
             return
 
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, weird, next tag=1" )
         if msg.message_type is MESSAGE_TYPE_CALL:
             print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, message type MESSAGE_TYPE_CALL" )
             if not handled:
