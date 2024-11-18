@@ -28,7 +28,7 @@ def _message_reader(
                 temp = temp.replace( '<', '"<' ) 
                 temp = temp.replace( '>', '>"' ) 
 #                print( f"==>> message.body={temp}" )
-                print( f"==>> message.body={json.dumps(temp)}" )
+                print( f"==>> message.body={json.dumps(temp, sort_keys=True, indent=4)}" )
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, after print message, before process(message), not sure where this goes" )
                 process(message)
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, after print message, after process(message)" )
