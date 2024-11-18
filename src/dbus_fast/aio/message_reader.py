@@ -29,9 +29,9 @@ def _message_reader(
                 temp = temp.replace( '>', '>"' ) 
                 print( f"==>> message.body-1={temp}" )
                 print( f"==>> message.body-2={json.dumps(temp, sort_keys=True, indent=4)}" )
-                temp2 = dict()
+                temp2 = {}
                 try:
-                    temp2 = dict( temp )
+                    temp2 = {item['name']:item for item in temp}
                 except Exception as e:
                     print( "failed to convert into dictionary" )
                 print( f"==>> message.body-3={json.dumps(temp2, sort_keys=True, indent=4)}" )
