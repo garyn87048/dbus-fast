@@ -368,6 +368,7 @@ class BaseMessageBus:
         :param removed_interfaces: List of unexported service interfaces.
         :type removed_interfaces: list[str]
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _emit_interface_removed, enter" )
         if self._disconnected:
             return
 
@@ -528,6 +529,7 @@ class BaseMessageBus:
 
         All pending  and future calls will error with a connection error.
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, disconnect, enter" )
         self._user_disconnect = True
         try:
             self._sock.shutdown(socket.SHUT_RDWR)
@@ -542,6 +544,7 @@ class BaseMessageBus:
         :returns: The next serial for the bus.
         :rtype: int
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, next_serial, enter" )
         self._serial += 1
         return self._serial
 
@@ -560,6 +563,7 @@ class BaseMessageBus:
             connection received.
         :type handler: :class:`Callable` or None
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, add_message_handler, enter" )
         error_text = "a message handler must be callable with a single parameter"
         if not callable(handler):
             raise TypeError(error_text)
@@ -580,6 +584,7 @@ class BaseMessageBus:
         :param handler: A message handler.
         :type handler: :class:`Callable`
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, remove_message_handler, enter" )
         for i, h in enumerate(self._user_message_handlers):
             if h == handler:
                 del self._user_message_handlers[i]
@@ -591,6 +596,7 @@ class BaseMessageBus:
         :param msg: The message to send.
         :type msg: :class:`Message <dbus_fast.Message>`
         """
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, send, enter" )
         raise NotImplementedError(
             'the "send" method must be implemented in the inheriting class'
         )
@@ -598,6 +604,7 @@ class BaseMessageBus:
     def _finalize(self, err: Optional[Exception]) -> None:
         """should be called after the socket disconnects with the disconnection
         error to clean up resources and put the bus in a disconnected state"""
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _finalize, enter" )
         if self._disconnected:
             return
 
@@ -619,6 +626,7 @@ class BaseMessageBus:
         self._user_message_handlers.clear()
 
     def _has_interface(self, interface: ServiceInterface) -> bool:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _has_interface, enter" )
         for _, exports in self._path_exports.items():
             for iface in exports:
                 if iface is interface:
@@ -635,6 +643,7 @@ class BaseMessageBus:
         body: List[Any],
         unix_fds: List[int] = [],
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _interface_signal_notify, enter" )
         path = None
         for p, ifaces in self._path_exports.items():
             for i in ifaces:
@@ -660,6 +669,7 @@ class BaseMessageBus:
     def _introspect_export_path(self, path: str) -> intr.Node:
         assert_object_path_valid(path)
 
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _introspect_export_path, enter" )
         if path in self._path_exports:
             node = intr.Node.default(path)
             for interface in self._path_exports[path]:
@@ -687,6 +697,7 @@ class BaseMessageBus:
         return node
 
     def _setup_socket(self) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _setup_socket, enter" )
         err = None
 
         for transport, options in self._bus_address:
@@ -745,6 +756,7 @@ class BaseMessageBus:
         reply: Optional[Message],
         err: Optional[Exception],
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _reply_notify, enter" )
         """Callback on reply."""
         if reply and msg.destination and reply.sender:
             self._name_owners[msg.destination] = reply.sender
@@ -755,6 +767,7 @@ class BaseMessageBus:
         msg: Message,
         callback: Optional[Callable[[Optional[Message], Optional[Exception]], None]],
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _call, enter" )
         if not msg.serial:
             msg.serial = self.next_serial()
 
@@ -776,6 +789,7 @@ class BaseMessageBus:
     @staticmethod
     def _check_callback_type(callback: Callable) -> None:
         """Raise a TypeError if the user gives an invalid callback as a parameter"""
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _check_callback_type, enter" )
 
         text = "a callback must be callable with two parameters"
 
@@ -790,6 +804,7 @@ class BaseMessageBus:
     def _check_method_return(
         msg: Optional[Message], err: Optional[Exception], signature: str
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _check_method_return, enter" )
         if err:
             raise err
         elif msg is None:
@@ -808,6 +823,7 @@ class BaseMessageBus:
             )
 
     def _process_message(self, msg: _Message) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _process_message, enter" )
         """Process a message received from the message bus."""
         handled = False
         for user_handler in self._user_message_handlers:
@@ -921,11 +937,13 @@ class BaseMessageBus:
     def _make_method_handler(
         self, interface: ServiceInterface, method: _Method
     ) -> Callable[[Message, Callable[[Message], None]], None]:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _make_method_handler, enter" )
         return partial(self._callback_method_handler, interface, method)
 
     def _find_message_handler(
         self, msg: _Message
     ) -> Optional[Callable[[Message, Callable[[Message], None]], None]]:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _find_message_handler, enter" )
         if "org.freedesktop.DBus." in msg.interface:
             if (
                 msg.interface == "org.freedesktop.DBus.Introspectable"
@@ -972,12 +990,14 @@ class BaseMessageBus:
     def _default_introspect_handler(
         self, msg: Message, send_reply: Callable[[Message], None]
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _default_introspect_handler, enter" )
         introspection = self._introspect_export_path(msg.path).tostring()
         send_reply(Message.new_method_return(msg, "s", [introspection]))
 
     def _default_ping_handler(
         self, msg: Message, send_reply: Callable[[Message], None]
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _default_ping_handler, enter" )
         send_reply(Message.new_method_return(msg))
 
     def _default_get_machine_id_handler(
@@ -1016,6 +1036,7 @@ class BaseMessageBus:
     def _default_get_managed_objects_handler(
         self, msg: Message, send_reply: Callable[[Message], None]
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _default_get_managed_objects_handler, enter" )
         result = {}
         result_signature = "a{oa{sa{sv}}}"
         error_handled = False
@@ -1068,6 +1089,7 @@ class BaseMessageBus:
     def _default_properties_handler(
         self, msg: Message, send_reply: Callable[[Message], None]
     ) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\message_bus, _default_properties_handler, enter" )
         methods = {"Get": "ss", "Set": "ssv", "GetAll": "s"}
         if msg.member not in methods or methods[msg.member] != msg.signature:
             raise DBusError(
