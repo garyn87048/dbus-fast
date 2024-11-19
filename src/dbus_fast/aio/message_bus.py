@@ -138,10 +138,9 @@ class _MessageWriter:
             )
         )
         print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, buffer_message, end" )
-        print( f"==>> self.messages=" )
-        print( f"   ==>>[0] {self.messages[0]}" )
-        print( f"   ==>>[1] {self.messages[1]}" )
-        print( f"   ==>>[2] {self.messages[2]}" )
+        print( f"==>> self.messages, length={len(self.messages)}" )
+        for( j in range( len(self.messages) ):
+            print( f"   ==>>[{j}] {self.messages[j]}" )
 
     def _write_without_remove_writer(self) -> None:
         """Call the write callback without removing the writer."""
