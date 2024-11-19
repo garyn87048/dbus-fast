@@ -24,8 +24,11 @@ def _message_reader(
             try:
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, before print message" )
                 print( f"==>> msg-reader-message={message}\n" )
-                
-                temp = dict( eval( str( message.body ) ) )
+                temp = {}
+                try:
+                    temp = dict( eval( str( message.body ) ) )
+                except Exception as e:
+                    print( "failed to convert into dictionary" )
                 print( f"temp={temp}" )
                 
                 
