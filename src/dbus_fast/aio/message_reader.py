@@ -25,7 +25,7 @@ def _message_reader(
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, before print message" )
                 print( f"==>> msg-reader-message={message}\n" )
                 
-                temp = dict( eval( message.body ) )
+                temp = dict( eval( str( message.body ) ) )
                 print( f"temp={temp}" )
                 
                 
