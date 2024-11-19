@@ -138,13 +138,16 @@ class _MessageWriter:
             )
         )
         print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, buffer_message, end" )
-        print( f"==>> self.messages={self.messages}" )
+        print( f"==>> self.messages=" )
+        print( f"   ==>>[0] {self.messages[0]}" )
+        print( f"   ==>>[1] {self.messages[1]}" )
+        print( f"   ==>>[2] {self.messages[2]}" )
 
     def _write_without_remove_writer(self) -> None:
         """Call the write callback without removing the writer."""
         self.write_callback(remove_writer=False)
 
-    def schedule_write(
+    def schedule_write(                                                                                                           
         self, msg: Optional[Message] = None, future: Optional[asyncio.Future] = None
     ) -> None:
         print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, schedule_write, enter" )
