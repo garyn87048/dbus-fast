@@ -140,8 +140,9 @@ class _MessageWriter:
         )
         print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, _MessageWriter, buffer_message, end" )
         print( f"==>> self.messages, length={len(self.messages)}" )
-        for j in range( len(self.messages) ):
-            print( f"   ==>>[{j}] {self.messages[j]}" )
+        for j in range( len( self.messages ) ):
+            for k in range( len( self.messages[j] ) ):
+                print( f"   ==>>[{j}][{k}] {self.messages[j][k]}" )
         print( "   ==>> end" )
 
     def _write_without_remove_writer(self) -> None:
