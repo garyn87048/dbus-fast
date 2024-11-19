@@ -35,9 +35,12 @@ def _message_reader(
                 print( f"   ==>> member={message.member} " )
                 print( f"   ==>> error_name={message.error_name} " )
                 print( f"   ==>> signature={message.signature} " )
-                print( f"   ==>> body={message.body}" )
+                if( len( message.body ) > 0 ):
+                    print( f"   ==>> body=" )                
+                    pprint( message.body )
+                else:
+                    print( "   ==>> body=[]" )
                 
-#                pprint( message.body )
 #                temp = {}
 #                try:
 #                    temp = dict( eval( str( message.body ) ) )
