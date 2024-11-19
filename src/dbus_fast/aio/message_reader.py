@@ -24,18 +24,23 @@ def _message_reader(
             try:
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, before print message" )
                 print( f"==>> msg-reader-message={message}\n" )
-                temp = str( message.body )
-                temp = temp.replace( '<', '"<' ) 
-                temp = temp.replace( '>', '>"' ) 
-                print( f"==>> message.body-1={temp}" )
-                print( f"==>> message.body-2={json.dumps(temp, sort_keys=True, indent=4)}" )
-                temp3 = eval( temp )
-                temp2 = {}
-                try:
-                    temp2 = {item['name']:item for item in temp3}
-                except Exception as e:
-                    print( "failed to convert into dictionary" )
-                print( f"==>> message.body-3={json.dumps(temp2, sort_keys=True, indent=4)}" )
+                
+                temp = dict( eval( message.body ) )
+                print( f"temp={temp}" )
+                
+                
+#                temp = str( message.body )
+#                temp = temp.replace( '<', '"<' ) 
+#                temp = temp.replace( '>', '>"' ) 
+#                print( f"==>> message.body-1={temp}" )
+#                print( f"==>> message.body-2={json.dumps(temp, sort_keys=True, indent=4)}" )
+#                temp3 = eval( temp )
+#                temp2 = {}
+#                try:
+#                    temp2 = {item['name']:item for item in temp3}
+#                except Exception as e:
+#                    print( "failed to convert into dictionary" )
+#                print( f"==>> message.body-3={json.dumps(temp2, sort_keys=True, indent=4)}" )
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, after print message, before process(message), not sure where this goes" )
                 process(message)
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, after print message, after process(message)" )
