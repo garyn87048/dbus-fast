@@ -28,7 +28,7 @@ def _message_reader(
                 try:
                     temp = dict( eval( str( message.body ) ) )
                 except Exception as e:
-                    print( "failed to convert into dictionary" )
+                    print( f"failed to convert into dictionary, e={e}" )
                 print( f"temp={temp}" )
                 
                 
