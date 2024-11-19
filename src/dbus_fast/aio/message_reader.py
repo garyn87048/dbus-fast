@@ -29,7 +29,7 @@ def _message_reader(
                 temp = temp.replace( '>', '>"' ) 
                 print( f"==>> message.body-1={temp}" )
                 print( f"==>> message.body-2={json.dumps(temp, sort_keys=True, indent=4)}" )
-                temp3 = temp.split()
+                temp3 = eval( temp )
                 temp2 = {}
                 try:
                     temp2 = {item['name']:item for item in temp3}
