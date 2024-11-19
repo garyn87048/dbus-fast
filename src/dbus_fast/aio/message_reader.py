@@ -24,8 +24,20 @@ def _message_reader(
                 return
             try:
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, before print message" )
-                print( f"==>> msg-reader-message={message}\n" )
-                pprint( message.body )
+                print( f"==>> msg-reader-messag:" )
+                print( f"   ==>> Message={self.message_type.name} " )
+                print( f"   ==>> serial={self.serial} " )
+                print( f"   ==>> reply_serial={self.reply_serial} " )
+                print( f"   ==>> sender={self.sender} " )
+                print( f"   ==>> destination={self.destination} " )
+                print( f"   ==>> path={self.path} " )
+                print( f"   ==>> interface={self.interface} " )
+                print( f"   ==>> member={self.member} " )
+                print( f"   ==>> error_name={self.error_name} " )
+                print( f"   ==>> signature={self.signature} " )
+                print( f"   ==>> body={self.body}" )
+                
+#                pprint( message.body )
 #                temp = {}
 #                try:
 #                    temp = dict( eval( str( message.body ) ) )
