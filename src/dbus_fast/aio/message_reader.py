@@ -3,6 +3,7 @@ import socket
 from functools import partial
 from typing import Callable, Optional
 import json
+from pprint import pprint
 
 from .._private.unmarshaller import Unmarshaller
 from ..message import Message
@@ -24,12 +25,13 @@ def _message_reader(
             try:
                 print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_reader, _message_reader, before print message" )
                 print( f"==>> msg-reader-message={message}\n" )
-                temp = {}
-                try:
-                    temp = dict( eval( str( message.body ) ) )
-                except Exception as e:
-                    print( f"failed to convert into dictionary, e={e}" )
-                print( f"temp={temp}" )
+                pprint( message.body )
+#                temp = {}
+#                try:
+#                    temp = dict( eval( str( message.body ) ) )
+#                except Exception as e:
+#                    print( f"failed to convert into dictionary, e={e}" )
+#                print( f"temp={temp}" )
                 
                 
 #                temp = str( message.body )
