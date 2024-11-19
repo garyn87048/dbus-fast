@@ -40,6 +40,7 @@ def _message_reader(
                     pprint( message.body )
                 else:
                     print( "   ==>> body=[]" )
+                print( "   ==>> end" )
                 
 #                temp = {}
 #                try:

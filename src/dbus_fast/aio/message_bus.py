@@ -141,6 +141,7 @@ class _MessageWriter:
         print( f"==>> self.messages, length={len(self.messages)}" )
         for j in range( len(self.messages) ):
             print( f"   ==>>[{j}] {self.messages[j]}" )
+        print( "   ==>> end" )
 
     def _write_without_remove_writer(self) -> None:
         """Call the write callback without removing the writer."""
@@ -392,7 +393,25 @@ class MessageBus(BaseMessageBus):
             - :class:`Exception` - If a connection error occurred.
         """
         print( "in \\dbus-fast\\src\\dbus_fast\\aio\\message_bus, MessageBus, call, enter" )
-        print( f"==>> call message={msg}" )
+#        print( f"==>> call message={msg}" )
+        print( f"==>> call message=" )
+        print( f"   ==>> Message={msg.message_type.name} " )
+        print( f"   ==>> serial={msg.serial} " )
+        print( f"   ==>> reply_serial={msg.reply_serial} " )
+        print( f"   ==>> sender={msg.sender} " )
+        print( f"   ==>> destination={msg.destination} " )
+        print( f"   ==>> path={msg.path} " )
+        print( f"   ==>> interface={msg.interface} " )
+        print( f"   ==>> member={msg.member} " )
+        print( f"   ==>> error_name={msg.error_name} " )
+        print( f"   ==>> signature={msg.signature} " )
+        if( len( msg.body ) > 0 ):
+            print( f"   ==>> body=" )                
+            pprint( msg.body )
+        else:
+            print( "   ==>> body=[]" )
+        print( "   ==>> end" )
+
         if (
             msg.flags.value & NO_REPLY_EXPECTED_VALUE
             or msg.message_type is not MessageType.METHOD_CALL
