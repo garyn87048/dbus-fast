@@ -1,7 +1,9 @@
+print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, start import calls" )
 from struct import Struct, error
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 from ..signature import SignatureType, Variant, get_signature_tree
+print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, end import calls" )
 
 PACK_LITTLE_ENDIAN = "<"
 
@@ -21,10 +23,12 @@ class Marshaller:
     __slots__ = ("signature_tree", "_buf", "body")
 
     def __init__(self, signature: str, body: List[Any]) -> None:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller __init__, enter" )
         """Marshaller constructor."""
         self.signature_tree = get_signature_tree(signature)
         self._buf = bytearray()
         self.body = body
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller __init__, exit" )
 
     @property
     def buffer(self) -> bytearray:
@@ -56,6 +60,7 @@ class Marshaller:
         return self._write_signature(signature.encode())
 
     def _write_signature(self, signature_bytes: _bytes) -> int:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller _write_signature, enter" )
         signature_len = len(signature_bytes)
         buf = self._buf
         buf.append(signature_len)
@@ -67,6 +72,7 @@ class Marshaller:
         return self._write_string(value)
 
     def _write_string(self, value: _str) -> int:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller _write_string, enter" )
         value_bytes = value.encode()
         value_len = len(value_bytes)
         written = self._align(4) + 4
@@ -79,9 +85,11 @@ class Marshaller:
         return written
 
     def write_variant(self, variant: Variant, type_: SignatureType) -> int:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, write_variant, enter" )
         return self._write_variant(variant, type_)
 
     def _write_variant(self, variant: Variant, type_: SignatureType) -> int:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _write_variant, enter" )
         signature = variant.signature
         signature_bytes = signature.encode()
         written = self._write_signature(signature_bytes)
@@ -96,6 +104,7 @@ class Marshaller:
     def _write_array(
         self, array: Union[List[Any], Dict[Any, Any]], type_: SignatureType
     ) -> int:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller _write_array, enter" )
         # TODO max array size is 64MiB (67108864 bytes)
         written = self._align(4)
         # length placeholder
@@ -144,18 +153,21 @@ class Marshaller:
     def _write_struct(
         self, array: Union[Tuple[Any], List[Any]], type_: SignatureType
     ) -> int:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _write_struct, enter" )
         written = self._align(8)
         for i, value in enumerate(array):
             written += self._write_single(type_.children[i], value)
         return written
 
     def write_dict_entry(self, dict_entry: List[Any], type_: SignatureType) -> int:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, write_dict_entry, enter" )
         written = self._align(8)
         written += self._write_single(type_.children[0], dict_entry[0])
         written += self._write_single(type_.children[1], dict_entry[1])
         return written
 
     def _write_single(self, type_: SignatureType, body: Any) -> int:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _write_single, enter" )
         t = type_.token
         if t == "y":
             self._buf.append(body)
@@ -182,10 +194,12 @@ class Marshaller:
 
     def marshall(self) -> bytearray:
         """Marshalls the body into a byte array"""
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, marshall, enter" )
         return self._marshall()
 
     def _marshall(self) -> bytearray:
         """Marshalls the body into a byte array"""
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _marshall, enter" )
         try:
             return self._construct_buffer()
         except KeyError as ex:
@@ -195,6 +209,7 @@ class Marshaller:
         raise RuntimeError("should not reach here")
 
     def _construct_buffer(self) -> bytearray:
+        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _construct_buffer, enter" )
         self._buf.clear()
         body = self.body
         for i, type_ in enumerate(self.signature_tree.types):

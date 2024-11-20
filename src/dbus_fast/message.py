@@ -288,6 +288,8 @@ class Message:
         """Marshall this message into a byte array."""
         # TODO maximum message size is 134217728 (128 MiB)
         print( "in \\dbus-fast\\src\\dbus_fast\\message, marshall, enter" )
+        print( f"==>> self.signature={self.signature}" )
+        print( f"==>> self.body={self.body}" )
         body_block = Marshaller(self.signature, self.body)
         body_buffer = body_block._marshall()
 
