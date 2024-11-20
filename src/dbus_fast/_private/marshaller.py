@@ -61,8 +61,7 @@ class Marshaller:
         return self._write_signature(signature.encode())
 
     def _write_signature(self, signature_bytes: _bytes) -> int:
-        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller _write_signature, enter" )
-        print( f"==>> signature={signature_bytes}" )
+        print( f"in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller _write_signature={signature_bytes} enter" )
         signature_len = len(signature_bytes)
         buf = self._buf
         buf.append(signature_len)
@@ -92,6 +91,8 @@ class Marshaller:
 
     def _write_variant(self, variant: Variant, type_: SignatureType) -> int:
         print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _write_variant, enter" )
+        print( f"==>> variant={variant}" )
+        print( f"==>> variant.signature={variant.signature}" )
         signature = variant.signature
         signature_bytes = signature.encode()
         written = self._write_signature(signature_bytes)
