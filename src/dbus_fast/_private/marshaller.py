@@ -62,6 +62,7 @@ class Marshaller:
 
     def _write_signature(self, signature_bytes: _bytes) -> int:
         print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller _write_signature, enter" )
+        print( f"==>> signature={signature_bytes}" )
         signature_len = len(signature_bytes)
         buf = self._buf
         buf.append(signature_len)
@@ -115,7 +116,7 @@ class Marshaller:
         buf += PACKED_UINT32_ZERO
         child_type = type_.children[0]
         token = child_type.token
-        print( f"==>> token={token}" )
+        print( f"==>> token=[{token}]" )
 
         if token in "xtd{(":
             # the first alignment is not included in array size
