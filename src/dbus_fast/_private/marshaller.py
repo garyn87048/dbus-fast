@@ -167,7 +167,7 @@ class Marshaller:
         return written
 
     def _write_single(self, type_: SignatureType, body: Any) -> int:
-        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _write_single, enter" )
+        print( f"in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _write_single, type_.token={type_.token}, enter" )
         t = type_.token
         if t == "y":
             self._buf.append(body)
