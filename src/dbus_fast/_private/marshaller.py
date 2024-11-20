@@ -24,6 +24,7 @@ class Marshaller:
 
     def __init__(self, signature: str, body: List[Any]) -> None:
         print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller __init__, enter" )
+        print( f"==>> signature={signature}, body={body}" )
         """Marshaller constructor."""
         self.signature_tree = get_signature_tree(signature)
         self._buf = bytearray()
@@ -104,7 +105,7 @@ class Marshaller:
     def _write_array(
         self, array: Union[List[Any], Dict[Any, Any]], type_: SignatureType
     ) -> int:
-        print( "in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller _write_array, enter" )
+        print( f"in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller _write_array, enter" )
         # TODO max array size is 64MiB (67108864 bytes)
         written = self._align(4)
         # length placeholder
@@ -114,6 +115,7 @@ class Marshaller:
         buf += PACKED_UINT32_ZERO
         child_type = type_.children[0]
         token = child_type.token
+        print( f"==>> token={token}" )
 
         if token in "xtd{(":
             # the first alignment is not included in array size
@@ -167,7 +169,7 @@ class Marshaller:
         return written
 
     def _write_single(self, type_: SignatureType, body: Any) -> int:
-        print( f"in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _write_single, type_.token={type_.token}, enter" )
+        print( f"in \\dbus-fast\\src\\dbus_fast\\_private\\marshaller, class Marshaller, _write_single, token={type_.token}, enter" )
         t = type_.token
         if t == "y":
             self._buf.append(body)
